@@ -1,49 +1,30 @@
 const mysql = require('mysql');
 
-const credentials = {
-  host: 'localhost',
-  port: 3306,
-  database: 'badge',
-  user: 'badge_user',
-  password: '12345'
-};
-
-const connect = () => new Promise((resolve, reject) => {
-  const connection = mysql.createConnection(credentials);
-  connection.connect((error) => {
-    if (error) {
-      return reject(error);
-    }
-
-    resolve(connection);
-  })
+const pool = mysql.createPool({
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  database: process.env.DB_DATABASE,
+  user: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  connectionLimit: process.env.DB_CONNECTION_LIMIT
 });
 
-const query = (connection, query, fields) => new Promise((resolve, reject) => {
+const query = (query, bindParams) => new Promise((resolve, reject) => {
   const queryObject = {
     sql: query
   };
 
-  fields && Object.assign(queryObject, {...queryObject, fields});
+  bindParams && Object.assign(queryObject, {fields: bindParams});
 
-  connection.query(queryObject, (error, results) => {
-    if (error) {
-      return reject(error);
-    }
+  return pool.query(queryObject, (error, results) => {
+      if (error) {
+        return reject(error);
+      }
 
-    resolve(results);
-  })
+      resolve(results);
+    });
 });
 
-const close = (connection) => {
-  return new Promise((resolve, reject) => {
-    connection.end();
-    resolve(true);
-  })
-};
-
 module.exports = {
-  connect,
-  query,
-  close
+  query
 };

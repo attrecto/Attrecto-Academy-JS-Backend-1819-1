@@ -1,41 +1,36 @@
 #!/usr/bin/env node
-const db = require('../db');
+require('dotenv').config();
+const {query} = require('../db');
 
 const createBadgesTable = async () => {
-  const query = "CREATE TABLE `badges` ( \
+  console.log("Creating badges table.");
+
+  const sql = "CREATE TABLE IF NOT EXISTS `badges` ( \
     `id` bigint(20) NOT NULL AUTO_INCREMENT, \
     `name` varchar(255) NOT NULL, \
     `description` text, \
     PRIMARY KEY (`id`) \
   );";
 
-  try {
-    const connection = await db.connect();
-    await db.query(connection, query);
-    await db.close(connection);
-  } catch (error) {
-    throw error;
-  }
+  return await query(sql);
 };
 
 const createUsersTable = async () => {
-  const query = "CREATE TABLE `users` ( \
+  console.log("Creating users table.");
+
+  const sql = "CREATE TABLE IF NOT EXISTS `users` ( \
     `id` bigint(20) NOT NULL AUTO_INCREMENT, \
     `name` varchar(255) NOT NULL, \
     PRIMARY KEY (`id`) \
   );";
 
-  try {
-    const connection = await db.connect();
-    await db.query(connection, query);
-    await db.close(connection);
-  } catch (error) {
-    throw error;
-  }
+  return await query(sql);
 };
 
 const createUsersBadgesTable = async () => {
-  const query = "CREATE TABLE `users_badges` ( \
+  console.log("Creating users_badges table.");
+
+  const sql = "CREATE TABLE IF NOT EXISTS `users_badges` ( \
     `badge_id` bigint(20) NOT NULL, \
     `user_id` bigint(20) NOT NULL, \
     PRIMARY KEY (`user_id`,`badge_id`), \
@@ -43,19 +38,15 @@ const createUsersBadgesTable = async () => {
     CONSTRAINT `users_badges_users_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE \
   );";
 
-  try {
-    const connection = await db.connect();
-    await db.query(connection, query);
-    await db.close(connection);
-  } catch (error) {
-    throw error;
-  }
+  return await query(sql);
 };
 
-Promise.resolve()
+return Promise.resolve()
   .then(() => createBadgesTable())
   .then(() => createUsersTable())
   .then(() => createUsersBadgesTable())
-  .catch(e => console.log(e));
-
-process.exit(0);
+  .then(() => process.exit(0))
+  .catch(e => {
+    console.log(e);
+    process.exit(0);
+  });
