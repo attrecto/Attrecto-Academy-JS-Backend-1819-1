@@ -1,9 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const {errorHandler} = requireFromRoot('common/error');
 
-/* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+  try {
+    res.send('GET users status OK.');
+  } catch (e) {
+    errorHandler(e, next);
+  }
 });
 
 module.exports = router;
