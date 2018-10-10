@@ -2,8 +2,9 @@ require('dotenv').config();
 
 const express = require('express');
 const logger = require('morgan');
+const {join} = require('path');
 
-global.requireFromRoot = (name) => require(__dirname + '/' + name);
+global.requireFromRoot = (name) => require(join(__dirname, name));
 global.AppError = require('./common/AppError');
 
 const indexRouter = require('./routes/index');

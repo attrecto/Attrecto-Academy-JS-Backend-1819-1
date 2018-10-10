@@ -1,6 +1,6 @@
 const errorHandler = (e, next) => {
   try {
-    console.log(e);
+    console.error(e);
     if (e instanceof AppError) {
       next(e);
     } else {

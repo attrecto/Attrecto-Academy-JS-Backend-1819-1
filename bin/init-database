@@ -12,7 +12,7 @@ const createBadgesTable = async () => {
     PRIMARY KEY (`id`) \
   );";
 
-  return await query(sql);
+  return query(sql);
 };
 
 const createUsersTable = async () => {
@@ -24,7 +24,7 @@ const createUsersTable = async () => {
     PRIMARY KEY (`id`) \
   );";
 
-  return await query(sql);
+  return query(sql);
 };
 
 const createUsersBadgesTable = async () => {
@@ -38,10 +38,10 @@ const createUsersBadgesTable = async () => {
     CONSTRAINT `users_badges_users_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE \
   );";
 
-  return await query(sql);
+  return query(sql);
 };
 
-return Promise.resolve()
+Promise.resolve()
   .then(() => createBadgesTable())
   .then(() => createUsersTable())
   .then(() => createUsersBadgesTable())
