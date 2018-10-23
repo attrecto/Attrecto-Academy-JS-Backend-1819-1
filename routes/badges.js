@@ -14,4 +14,16 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+router.get('/:id', async (req, res, next) => {
+  try {
+    const id = req.params.id;
+
+    const badge = await badgeManager.getBadge(id);
+
+    res.send(badge);
+  } catch (e) {
+    errorHandler(e, next);
+  }
+});
+
 module.exports = router;
