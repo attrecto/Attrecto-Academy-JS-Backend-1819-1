@@ -43,9 +43,9 @@ router.patch('/:id', async (req, res, next) => {
     const id = req.params.id;
     const data = req.body;
 
-    const badge = await badgeManager.updateBadge(id, data);
+    const result = await badgeManager.updateBadge(id, data);
 
-    res.send(badge);
+    res.send(result);
   } catch (e) {
     errorHandler(e, next);
   }
