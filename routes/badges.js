@@ -38,4 +38,17 @@ router.get('/:id', async (req, res, next) => {
   }
 });
 
+router.patch('/:id', async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const data = req.body;
+
+    const badge = await badgeManager.updateBadge(id, data);
+
+    res.send(badge);
+  } catch (e) {
+    errorHandler(e, next);
+  }
+});
+
 module.exports = router;

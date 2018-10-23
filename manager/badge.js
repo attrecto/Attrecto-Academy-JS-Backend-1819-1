@@ -21,16 +21,20 @@ const getBadge = async (id) => {
   const badges = await query(sql, [id]);
 
   if (badges.length === 0) {
-    throw new AppError(404, 'Badge not found!')
+    throw new AppError(404, 'Badge not found!');
   }
 
   return badges[0];
 };
 
 const updateBadge = async (id, data) => {
-  const sql = "UPDATE `badges` ";
+  const sql = "UPDATE `badges` SET `name` = ?, `description` = ? WHERE `id` = ?";
 
-  const result = await query(sql, [data.name, data.description || null]);
+  const result = await query(sql, [data.name, data.description || null, id]);
+
+  if (result.affectedRows === 0) {
+    throw new AppError(404, 'Badge not found!');
+  }
 
   return result;
 };
@@ -38,5 +42,6 @@ const updateBadge = async (id, data) => {
 module.exports = {
   getBadges,
   getBadge,
-  createBadge
+  createBadge,
+  updateBadge
 };
