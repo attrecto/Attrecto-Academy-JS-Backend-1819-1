@@ -14,7 +14,7 @@ const query = (query, bindParams) => new Promise((resolve, reject) => {
     sql: query
   };
 
-  bindParams && Object.assign(queryObject, {fields: bindParams});
+  bindParams && Object.assign(queryObject, {values: bindParams});
 
   return pool.query(queryObject, (error, results) => {
       if (error) {
