@@ -8,7 +8,7 @@ const getBadges = async () => {
 };
 
 const createBadge = async (data) => {
-  const sql = "INSERT INTO `badges` SET `name` = ?, `description` = ?";
+  const sql = "INSERT INTO `badges` (`name`, `description`) VALUES (?, ?)";
 
   const result = await query(sql, [data.name, data.description || null]);
 
@@ -25,6 +25,14 @@ const getBadge = async (id) => {
   }
 
   return badges[0];
+};
+
+const updateBadge = async (id, data) => {
+  const sql = "UPDATE `badges` ";
+
+  const result = await query(sql, [data.name, data.description || null]);
+
+  return result;
 };
 
 module.exports = {
