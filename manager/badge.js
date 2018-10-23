@@ -39,9 +39,22 @@ const updateBadge = async (id, data) => {
   return result;
 };
 
+const deleteBadge = async (id) => {
+  const sql = "DELETE FROM `badges` WHERE `id` = ?";
+
+  const result = await query(sql, [id]);
+
+  if (result.affectedRows === 0) {
+    throw new AppError(404, 'Badge not found!');
+  }
+
+  return result;
+};
+
 module.exports = {
   getBadges,
   getBadge,
   createBadge,
-  updateBadge
+  updateBadge,
+  deleteBadge
 };
