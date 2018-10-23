@@ -14,6 +14,18 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+router.post('/', async (req, res, next) => {
+  try {
+    const data = req.body;
+
+    const result = await badgeManager.createBadge(data);
+
+    res.send(result);
+  } catch (e) {
+    errorHandler(e, next);
+  }
+});
+
 router.get('/:id', async (req, res, next) => {
   try {
     const id = req.params.id;
