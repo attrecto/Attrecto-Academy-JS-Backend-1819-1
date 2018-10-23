@@ -51,4 +51,16 @@ router.patch('/:id', async (req, res, next) => {
   }
 });
 
+router.delete('/:id', async (req, res, next) => {
+  try {
+    const id = req.params.id;
+
+    const result = await badgeManager.deleteBadge(id);
+
+    res.send(result);
+  } catch (e) {
+    errorHandler(e, next);
+  }
+});
+
 module.exports = router;
