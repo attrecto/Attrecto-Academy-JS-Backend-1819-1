@@ -10,13 +10,13 @@ const getBadges = async () => {
 const getBadge = async (id) => {
   const sql = "SELECT * FROM `badges` WHERE `id` = ?";
 
-  const badge = await query(sql, [id]);
+  const badges = await query(sql, [id]);
 
-  if (badge.length === 0) {
+  if (badges.length === 0) {
     throw new AppError(404, 'Badge not found!')
   }
 
-  return badge;
+  return badges[0];
 };
 
 module.exports = {
