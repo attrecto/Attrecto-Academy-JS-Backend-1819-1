@@ -8,7 +8,7 @@ router.get('/', async (req, res, next) => {
   try {
     const badges = await badgeManager.getBadges();
 
-    res.send(badges);
+    res.json(badges);
   } catch (e) {
     errorHandler(e, next);
   }
@@ -20,7 +20,7 @@ router.post('/', async (req, res, next) => {
 
     const result = await badgeManager.createBadge(data);
 
-    res.send(result);
+    res.json(result);
   } catch (e) {
     errorHandler(e, next);
   }
@@ -32,7 +32,7 @@ router.get('/:id', async (req, res, next) => {
 
     const badge = await badgeManager.getBadge(id);
 
-    res.send(badge);
+    res.json(badge);
   } catch (e) {
     errorHandler(e, next);
   }
@@ -45,7 +45,7 @@ router.patch('/:id', async (req, res, next) => {
 
     const result = await badgeManager.updateBadge(id, data);
 
-    res.send(result);
+    res.json(result);
   } catch (e) {
     errorHandler(e, next);
   }
@@ -57,7 +57,7 @@ router.delete('/:id', async (req, res, next) => {
 
     const result = await badgeManager.deleteBadge(id);
 
-    res.send(result);
+    res.json(result);
   } catch (e) {
     errorHandler(e, next);
   }
