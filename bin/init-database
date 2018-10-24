@@ -1,0 +1,52 @@
+#!/usr/bin/env node
+require('dotenv').config();
+const {query} = require('../db');
+
+const createBadgesTable = async () => {
+  console.log("Creating badges table.");
+
+  const sql = "CREATE TABLE IF NOT EXISTS `badges` ( \
+    `id` bigint(20) NOT NULL AUTO_INCREMENT, \
+    `name` varchar(255) NOT NULL, \
+    `description` text, \
+    PRIMARY KEY (`id`) \
+  );";
+
+  return query(sql);
+};
+
+const createUsersTable = async () => {
+  console.log("Creating users table.");
+
+  const sql = "CREATE TABLE IF NOT EXISTS `users` ( \
+    `id` bigint(20) NOT NULL AUTO_INCREMENT, \
+    `name` varchar(255) NOT NULL, \
+    PRIMARY KEY (`id`) \
+  );";
+
+  return query(sql);
+};
+
+const createUsersBadgesTable = async () => {
+  console.log("Creating users_badges table.");
+
+  const sql = "CREATE TABLE IF NOT EXISTS `users_badges` ( \
+    `badge_id` bigint(20) NOT NULL, \
+    `user_id` bigint(20) NOT NULL, \
+    PRIMARY KEY (`user_id`,`badge_id`), \
+    CONSTRAINT `users_badges_badges_FK` FOREIGN KEY (`badge_id`) REFERENCES `badges` (`id`) ON DELETE CASCADE, \
+    CONSTRAINT `users_badges_users_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE \
+  );";
+
+  return query(sql);
+};
+
+Promise.resolve()
+  .then(() => createBadgesTable())
+  .then(() => createUsersTable())
+  .then(() => createUsersBadgesTable())
+  .then(() => process.exit(0))
+  .catch(e => {
+    console.log(e);
+    process.exit(0);
+  });
