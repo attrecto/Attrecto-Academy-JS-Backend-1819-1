@@ -8,6 +8,7 @@ global.requireFromRoot = (name) => require(join(__dirname, name));
 global.AppError = require('./common/AppError');
 
 const indexRouter = require('./routes/index');
+const badgesRouter = require('./routes/badges');
 const usersRouter = require('./routes/users');
 
 const app = express();
@@ -18,6 +19,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/badges', badgesRouter);
 
 app.use((req, res, next) => {
   const err = new Error('Not Found');
