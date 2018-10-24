@@ -25,7 +25,7 @@ app.use((req, res, next) => {
   next(err);
 });
 
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   console.log(err, err.message, err.stack);
   res.status(err.status || 500);
   res.json({
