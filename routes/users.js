@@ -63,4 +63,48 @@ router.delete('/:id', async (req, res, next) => {
   }
 });
 
+router.get('/:userId/badges', async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const result = await userManager.getUserBadges(userId);
+
+    res.json(result);
+  } catch (e) {
+    errorHandler(e, next);
+  }
+});
+
+router.get('/:userId/badges/:badgeId', async (req, res, next) => {
+  try {
+    const { userId, badgeId } = req.params;
+    const result = await userManager.getUserBadge(userId, badgeId);
+
+    res.json(result);
+  } catch (e) {
+    errorHandler(e, next);
+  }
+});
+
+router.post('/:userId/badges/:badgeId', async (req, res, next) => {
+  try {
+    const { userId, badgeId } = req.params;
+    const result = await userManager.assignBadgeToUser(userId, badgeId);
+
+    res.json(result);
+  } catch (e) {
+    errorHandler(e, next);
+  }
+});
+
+router.delete('/:userId/badges/:badgeId', async (req, res, next) => {
+  try {
+    const { userId, badgeId } = req.params;
+    const result = await userManager.removeBadgeFromUser(userId, badgeId);
+
+    res.json(result);
+  } catch (e) {
+    errorHandler(e, next);
+  }
+});
+
 module.exports = router;

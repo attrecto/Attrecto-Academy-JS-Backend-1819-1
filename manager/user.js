@@ -51,10 +51,62 @@ const deleteUser = async (id) => {
   return result;
 };
 
+const getUserBadges = async (userId) => {
+  const sql =
+    "SELECT * FROM `badges` " +
+    "INNER JOIN `users_badges` ON `users_badges`.`badge_id` = `badges`.`id` " +
+    "WHERE `users_badges`.`user_id` = ?";
+
+  const result = await query(sql, [userId]);
+
+  return result;
+};
+
+const getUserBadge = async (userId, badgeId) => {
+  const sql =
+    "SELECT * FROM `badges` " +
+    "INNER JOIN `users_badges` ON `users_badges`.`badge_id` = `badges`.`id` " +
+    "WHERE `users_badges`.`user_id` = ? AND `badges`.`id` = ?";
+
+  const result = await query(sql, [userId, badgeId]);
+
+  if (result.length === 0) {
+    throw new AppError(404, 'User/badge not found!');
+  }
+
+  return result[0];
+};
+
+const assignBadgeToUser = async (userId, badgeId) => {
+  const sql = "INSERT INTO `users_badges` (`user_id`, `badge_id`) VALUES (?, ?)";
+
+  // TODO: duplicate entry key hiba kezelese
+  // TODO: ervenytelen badge vagy user id (404)
+  const result = await query(sql, [userId, badgeId]);
+
+  return result;
+};
+
+const removeBadgeFromUser = async (userId, badgeId) => {
+  const sql = "DELETE FROM `users_badges` WHERE `user_id` = ? AND `badge_id` = ?";
+
+  const result = await query(sql, [userId, badgeId]);
+
+  if (result.affectedRows === 0) {
+    throw new AppError(404, 'User and/or badge not found!');
+  }
+
+  return result;
+};
+
 module.exports = {
   getUsers,
   getUser,
   createUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  getUserBadges,
+  getUserBadge,
+  assignBadgeToUser,
+  removeBadgeFromUser,
 };
