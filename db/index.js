@@ -6,25 +6,26 @@ const pool = mysql.createPool({
   database: process.env.DB_DATABASE,
   user: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
-  connectionLimit: process.env.DB_CONNECTION_LIMIT
+  connectionLimit: process.env.DB_CONNECTION_LIMIT,
 });
 
-const query = (query, bindParams) => new Promise((resolve, reject) => {
-  const queryObject = {
-    sql: query
-  };
+const query = (query, bindParams) =>
+  new Promise((resolve, reject) => {
+    const queryObject = {
+      sql: query,
+    };
 
-  bindParams && Object.assign(queryObject, {values: bindParams});
+    bindParams && Object.assign(queryObject, {values: bindParams});
 
-  return pool.query(queryObject, (error, results) => {
+    return pool.query(queryObject, (error, results) => {
       if (error) {
         return reject(error);
       }
 
       resolve(results);
     });
-});
+  });
 
 module.exports = {
-  query
+  query,
 };

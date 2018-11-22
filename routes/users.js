@@ -1,18 +1,11 @@
+'use strict';
+
 const express = require('express');
 const router = express.Router();
-const { errorHandler } = requireFromRoot('common/error');
+const {errorHandler} = requireFromRoot('common/error');
+const authMiddleware = requireFromRoot('middleware/auth');
 
 const userManager = requireFromRoot('manager/user');
-
-router.get('/', async (req, res, next) => {
-  try {
-    const users = await userManager.getUsers();
-
-    res.json(users);
-  } catch (e) {
-    errorHandler(e, next);
-  }
-});
 
 router.post('/', async (req, res, next) => {
   try {
@@ -21,6 +14,18 @@ router.post('/', async (req, res, next) => {
     const result = await userManager.createUser(data);
 
     res.json(result);
+  } catch (e) {
+    errorHandler(e, next);
+  }
+});
+
+router.use(authMiddleware());
+
+router.get('/', async (req, res, next) => {
+  try {
+    const users = await userManager.getUsers();
+
+    res.json(users);
   } catch (e) {
     errorHandler(e, next);
   }
@@ -65,7 +70,7 @@ router.delete('/:id', async (req, res, next) => {
 
 router.get('/:userId/badges', async (req, res, next) => {
   try {
-    const { userId } = req.params;
+    const {userId} = req.params;
     const result = await userManager.getUserBadges(userId);
 
     res.json(result);
@@ -76,7 +81,7 @@ router.get('/:userId/badges', async (req, res, next) => {
 
 router.get('/:userId/badges/:badgeId', async (req, res, next) => {
   try {
-    const { userId, badgeId } = req.params;
+    const {userId, badgeId} = req.params;
     const result = await userManager.getUserBadge(userId, badgeId);
 
     res.json(result);
@@ -87,7 +92,7 @@ router.get('/:userId/badges/:badgeId', async (req, res, next) => {
 
 router.post('/:userId/badges/:badgeId', async (req, res, next) => {
   try {
-    const { userId, badgeId } = req.params;
+    const {userId, badgeId} = req.params;
     const result = await userManager.assignBadgeToUser(userId, badgeId);
 
     res.json(result);
@@ -98,7 +103,7 @@ router.post('/:userId/badges/:badgeId', async (req, res, next) => {
 
 router.delete('/:userId/badges/:badgeId', async (req, res, next) => {
   try {
-    const { userId, badgeId } = req.params;
+    const {userId, badgeId} = req.params;
     const result = await userManager.removeBadgeFromUser(userId, badgeId);
 
     res.json(result);

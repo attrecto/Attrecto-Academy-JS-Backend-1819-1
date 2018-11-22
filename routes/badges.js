@@ -1,8 +1,12 @@
+'use strict';
+
 const express = require('express');
 const router = express.Router();
 const {errorHandler} = requireFromRoot('common/error');
-
+const authMiddleware = requireFromRoot('middleware/auth');
 const badgeManager = requireFromRoot('manager/badge');
+
+router.use(authMiddleware());
 
 router.get('/', async (req, res, next) => {
   try {

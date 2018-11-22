@@ -1,8 +1,10 @@
+'use strict';
+
 require('dotenv').config();
 
 const express = require('express');
 const logger = require('morgan');
-const {join} = require('path');
+const { join } = require('path');
 
 global.requireFromRoot = (name) => require(join(__dirname, name));
 global.AppError = require('./common/AppError');

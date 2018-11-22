@@ -16,8 +16,8 @@ class AppError extends Error {
     return {
       status: this.status,
       message: this.message,
-      stack: this.stack
-    }
+      stack: this.stack,
+    };
   }
 }
 

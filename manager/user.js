@@ -1,22 +1,24 @@
-const { query } = requireFromRoot('db');
-const AppError = requireFromRoot('common/AppError');
+'use strict';
+
+const {query} = requireFromRoot('db');
+const {hashPassword} = requireFromRoot('lib/auth');
 
 const getUsers = async () => {
-  const sql = "SELECT * FROM `users`";
+  const sql = 'SELECT * FROM `users`';
 
   return query(sql);
 };
 
 const createUser = async (data) => {
-  const sql = "INSERT INTO `users` (`name`) VALUES (?)";
-
-  const result = await query(sql, [data.name]);
+  const sql = 'INSERT INTO `users` (`name`, `password`) VALUES (?, ?)';
+  const hashedPassword = await hashPassword(data.password);
+  const result = await query(sql, [data.name, hashedPassword]);
 
   return result;
 };
 
 const getUser = async (id) => {
-  const sql = "SELECT * FROM `users` WHERE `id` = ?";
+  const sql = 'SELECT * FROM `users` WHERE `id` = ?';
 
   const users = await query(sql, [id]);
 
@@ -28,7 +30,7 @@ const getUser = async (id) => {
 };
 
 const updateUser = async (id, data) => {
-  const sql = "UPDATE `users` SET `name` = ? WHERE `id` = ?";
+  const sql = 'UPDATE `users` SET `name` = ? WHERE `id` = ?';
 
   const result = await query(sql, [data.name, id]);
 
@@ -40,7 +42,7 @@ const updateUser = async (id, data) => {
 };
 
 const deleteUser = async (id) => {
-  const sql = "DELETE FROM `users` WHERE `id` = ?";
+  const sql = 'DELETE FROM `users` WHERE `id` = ?';
 
   const result = await query(sql, [id]);
 
@@ -53,9 +55,9 @@ const deleteUser = async (id) => {
 
 const getUserBadges = async (userId) => {
   const sql =
-    "SELECT * FROM `badges` " +
-    "INNER JOIN `users_badges` ON `users_badges`.`badge_id` = `badges`.`id` " +
-    "WHERE `users_badges`.`user_id` = ?";
+    'SELECT * FROM `badges` ' +
+    'INNER JOIN `users_badges` ON `users_badges`.`badge_id` = `badges`.`id` ' +
+    'WHERE `users_badges`.`user_id` = ?';
 
   const result = await query(sql, [userId]);
 
@@ -64,9 +66,9 @@ const getUserBadges = async (userId) => {
 
 const getUserBadge = async (userId, badgeId) => {
   const sql =
-    "SELECT * FROM `badges` " +
-    "INNER JOIN `users_badges` ON `users_badges`.`badge_id` = `badges`.`id` " +
-    "WHERE `users_badges`.`user_id` = ? AND `badges`.`id` = ?";
+    'SELECT * FROM `badges` ' +
+    'INNER JOIN `users_badges` ON `users_badges`.`badge_id` = `badges`.`id` ' +
+    'WHERE `users_badges`.`user_id` = ? AND `badges`.`id` = ?';
 
   const result = await query(sql, [userId, badgeId]);
 
@@ -78,7 +80,8 @@ const getUserBadge = async (userId, badgeId) => {
 };
 
 const assignBadgeToUser = async (userId, badgeId) => {
-  const sql = "INSERT INTO `users_badges` (`user_id`, `badge_id`) VALUES (?, ?)";
+  const sql =
+    'INSERT INTO `users_badges` (`user_id`, `badge_id`) VALUES (?, ?)';
 
   // TODO: duplicate entry key hiba kezelese
   // TODO: ervenytelen badge vagy user id (404)
@@ -88,7 +91,8 @@ const assignBadgeToUser = async (userId, badgeId) => {
 };
 
 const removeBadgeFromUser = async (userId, badgeId) => {
-  const sql = "DELETE FROM `users_badges` WHERE `user_id` = ? AND `badge_id` = ?";
+  const sql =
+    'DELETE FROM `users_badges` WHERE `user_id` = ? AND `badge_id` = ?';
 
   const result = await query(sql, [userId, badgeId]);
 

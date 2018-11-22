@@ -1,14 +1,16 @@
+'use strict';
+
 const {query} = requireFromRoot('db');
 const AppError = requireFromRoot('common/AppError');
 
 const getBadges = async () => {
-  const sql = "SELECT * FROM `badges`";
+  const sql = 'SELECT * FROM `badges`';
 
   return query(sql);
 };
 
 const createBadge = async (data) => {
-  const sql = "INSERT INTO `badges` (`name`, `description`) VALUES (?, ?)";
+  const sql = 'INSERT INTO `badges` (`name`, `description`) VALUES (?, ?)';
 
   const result = await query(sql, [data.name, data.description || null]);
 
@@ -16,7 +18,7 @@ const createBadge = async (data) => {
 };
 
 const getBadge = async (id) => {
-  const sql = "SELECT * FROM `badges` WHERE `id` = ?";
+  const sql = 'SELECT * FROM `badges` WHERE `id` = ?';
 
   const badges = await query(sql, [id]);
 
@@ -28,7 +30,8 @@ const getBadge = async (id) => {
 };
 
 const updateBadge = async (id, data) => {
-  const sql = "UPDATE `badges` SET `name` = ?, `description` = ? WHERE `id` = ?";
+  const sql =
+    'UPDATE `badges` SET `name` = ?, `description` = ? WHERE `id` = ?';
 
   const result = await query(sql, [data.name, data.description || null, id]);
 
@@ -40,7 +43,7 @@ const updateBadge = async (id, data) => {
 };
 
 const deleteBadge = async (id) => {
-  const sql = "DELETE FROM `badges` WHERE `id` = ?";
+  const sql = 'DELETE FROM `badges` WHERE `id` = ?';
 
   const result = await query(sql, [id]);
 
@@ -56,5 +59,5 @@ module.exports = {
   getBadge,
   createBadge,
   updateBadge,
-  deleteBadge
+  deleteBadge,
 };
