@@ -144,6 +144,35 @@
 			"response": []
 		},
 		{
+			"name": "localhost:3000/login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"user_x\",\n\t\"password\": \"kekll\"\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/login",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "localhost:3000/users",
 			"request": {
 				"method": "GET",
@@ -151,6 +180,12 @@
 					{
 						"key": "Content-Type",
 						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidXNlcl94IiwiaWQiOjQsImlhdCI6MTU0Mjg5NjQzMSwiZXhwIjoxNTQzNTAxMjMxfQ.SdGAQ_RNQmVxpLxJhF04W3MDoBKpIx9UaUktc1E92Io",
+						"type": "text",
+						"disabled": true
 					}
 				],
 				"body": {
@@ -158,13 +193,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "localhost:3000/users",
+					"raw": "localhost:3000/badges",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"users"
+						"badges"
 					]
 				}
 			},
@@ -182,7 +217,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\": \"User X\"\n}"
+					"raw": "{\n\t\"name\": \"user_x\",\n\t\"password\": \"kekll\"\n}"
 				},
 				"url": {
 					"raw": "localhost:3000/users",
